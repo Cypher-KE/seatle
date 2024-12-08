@@ -16,11 +16,8 @@
         }
     ],
     "env": {
-        "DJANGO_SETTINGS_MODULE": "myproject.settings",
-        "DATABASE_URL": "sqlite:///./db.sqlite3",  // Adjust the path as necessary
-        "SECRET_KEY": "your_secret_key_here"
-    },
-    "static": {
-        "serve": true
+        "DJANGO_SETTINGS_MODULE": "becima.settings",
+        "DATABASE_URL": "sqlite:///./db.sqlite3", 
+        "SECRET_KEY": "django-insecure-tev#_g_d+$2496qs+&vlm0dlt!80@%&rqrm!pye+ao_tv(5l2)"
     }
 }
