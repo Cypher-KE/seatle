@@ -3,16 +3,21 @@
 # Exit on error
 set -e
 
+# Function to log messages
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
 # Install dependencies
-echo "Installing dependencies..."
+log "Installing dependencies..."
 pip install -r requirements.txt
 
 # Run migrations
-echo "Applying database migrations..."
+log "Applying database migrations..."
 python manage.py migrate --noinput
 
 # Collect static files
-echo "Collecting static files..."
+log "Collecting static files..."
 python manage.py collectstatic --noinput
 
-echo "Build completed successfully."
+log "Build completed successfully."
