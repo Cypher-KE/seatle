@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Property Listings{% endblock title %}
+
+{% block body %}
+<style>
+    .properties_list {
+        width: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 15px; /* Increased gap for better spacing */
+        margin: 33px;
+    }
+    
+    .property-link {
+        text-decoration: none;
+        color: #333;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+    }
+
+    .property-link:hover {
+        transform: translateY(-5px); /* Lift effect on hover */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+    }
+
+    .list_prop {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #ffffff; /* White background for cards */
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .property-image {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 12px 12px 0 0; /* Rounded top corners */
+    }
+    
+    .property-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s; /* Smooth zoom effect */
+    }
+
+    .property-image:hover img {
+        transform: scale(1.1); /* Zoom effect on image hover */
+    }
+
+    .property-details {
+        padding: 15px;
+        flex: 1;
+    }
+
+    .property-details h1 {
+        font-size: 1.5em;
+        margin: 0;
+        color: #333;
+    }
+    
+    .property-details h3 {
+        font-size: 1.1em;
+        color: #666;
+        margin: 10px 0;
+    }
+
+    .property-features {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9em;
+        color: #888;
+        margin: 10px 0;
+    }
+
+    .property-price {
+        font-size: 1.3em;
+        color: #e67e22; /* Orange color for price */
+        font-weight: bold;
+        margin: 10px 0;
+    }
+
+    .property-rating {
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #f5b50a; /* Gold color for stars */
+    }
+    
+    .property-description {
+        font-size: 0.9em;
+        color: #666;
+        margin: 10px 0;
+        height: 50px; /* Fixed height for uniformity */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Ellipsis for overflow text */
+    }
+
+    .property-utilities {
+        font-size: 0.8em;
+        color: #888;
+        margin-top: 10px;
+    }
+</style>
+<h1 style="text-align: center; color: #333; text-decoration: dotted; text-transform: uppercase;">Property List</h1>
+<main class="properties_list" id="properties_list">
+    {% for property in properties %}
+    <a href="{% url 'server:property' pk=property.id %}" class="property-link">
+        <article class="list_prop" id="{{ property.id }}">
+            <div class="property-image">
+                <img src="{{ property.photos.first.image.url }}" alt="{{ property.name }}">
+            </div>
+            <div class="property-details">
+                <h1>{{ property.name }}</h1>
+                <h3>{{ property.address }}</h3>
+                <div class="property-features">
+                    <span>{{ property.size }} sqft</span>
+                    <span>{{ property.number_of_floors }} Floors</span>
+                    <span>{{ property.overall_rating }} ★ ({{ property.review_count }} reviews)</span>
+                </div>
+                <div class="property-price">$ {{ property.price }}</div>
+                <div class="property-description">{{ property.description|truncatewords:20 }}</div>
+                <div class="property-utilities">
+                    Public Utilities: 
+                    {% for utility in property.public_utils.all %}
+                        {{ utility.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </article>
+    </a>
+    {% endfor %}
+</main>
+{% endblock body %}

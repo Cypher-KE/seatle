@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load app_filters %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    <!----===== Boxicons CSS ===== -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    
+    <title>Becima REMS {% block title %}{% endblock %}</title> 
+</head>
+<body>
+    <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="logo.png" alt="">
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name">Becima</span>
+                    <span class="profession">House Management</span>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+
+                <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li>
+
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="/profile/">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text nav-text">Home</span>
+                        </a>
+                    </li>
+                {% if user|isAuthenticated %}
+                    <li class="nav-link">
+                        <a href="/profile/update/">
+                            <i class='bx bxs-user-account icon' ></i>
+                            <span class="text nav-text">My Account</span>
+                        </a>
+                    </li>
+
+                    {% if user.account.role >= 0 %}
+                    <li class="nav-link">
+                        <a href="/message/list/">
+                            <i class='bx bx-message-alt icon' ></i>
+                            <span class="text nav-text">Messages</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% if user.account.role == 10 %}
+                    <li class="nav-link">
+                        <a href="{% url 'server:get_my_bookings' %}">
+                            <i class='bx bx-bell icon'></i>
+                            <span class="text nav-text">My Bookings</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.account.role == 20 %}
+                    <li class="nav-link">
+                        <a href="{% url 'server:owner_listings' %}">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Properties</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="{% url 'server:new_property' %}">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text nav-text">New Property</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.account.role == 10 %}
+                    <li class="nav-link">
+                        <a href="{% url 'server:listings' %}">
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">Listings</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.account.role == 30 %}
+                    <li class="nav-link">
+                        <a href="/admin/users/">
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">Manage Users</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="/admin/activity/">
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">View Activity</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="/admin/statistics/">
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">Statistics</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                {% endif %}
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                {% if user|isAuthenticated %}
+                <li class="">
+                    <a href="/logout">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Dark mode</span>
+
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+                
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="home" style="margin-left: 10px; text-align: center; margin-right: 10px; padding: 10px;">
+        <h1>{% block body_header %}{% endblock %}</h1>
+        {% if alert_success %}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                {{ alert_success }}
+            </div>
+        {% endif %}
+        {% if alert_danger %}
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                {{ alert_danger }}
+            </div>
+        {% endif %}
+        {% block body %}{% endblock %}
+    </div>
+
+    <script>
+        const body = document.querySelector('body'),
+        sidebar = body.querySelector('nav'),
+        toggle = body.querySelector(".toggle"),
+        searchBtn = body.querySelector(".search-box"),
+        modeSwitch = body.querySelector(".toggle-switch"),
+        modeText = body.querySelector(".mode-text");
+
+
+        toggle.addEventListener("click" , () =>{
+            sidebar.classList.toggle("close");
+        })
+
+        searchBtn.addEventListener("click" , () =>{
+            sidebar.classList.remove("close");
+        })
+
+        modeSwitch.addEventListener("click" , () =>{
+            body.classList.toggle("dark");
+            
+            if(body.classList.contains("dark")){
+                modeText.innerText = "Light mode";
+            }else{
+                modeText.innerText = "Dark mode";
+                
+            }
+        });
+    </script>
+    
+</body>
+</html>

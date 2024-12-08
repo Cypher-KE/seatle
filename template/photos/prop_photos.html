@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} Facilities {% endblock title %}
+
+{% block body %}
+    <h1 style="text-align: center; color: #333; margin-bottom: 20px;">Upload Photos for {{ property.name }}</h1>
+    <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; align-items: center; width: auto;">
+        {% csrf_token %}
+        <input type="file" name="image" multiple style="
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #555;
+        ">
+        <button type="submit" style="
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        ">Upload</button>
+    </form>
+    
+{% endblock body %}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}New Property{% endblock title %}
+
+{% block body %}
+<style>
+    body {
+        background-color: #f0f2f5;
+        /* Light background for contrast */
+        font-family: 'Arial', sans-serif;
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .form_container {
+        max-width: 1600px;
+        /* Limit the form width for better design */
+        margin: auto;
+        /* Center the form */
+        background-color: #ffffff;
+        /* White background for the form */
+        border-radius: 8px;
+        /* Rounded corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        /* Subtle shadow for depth */
+        padding: 30px;
+        /* Internal spacing */
+    }
+
+    .form_group {
+        margin-bottom: 15px;
+        /* Space between form groups */
+    }
+
+    label {
+        display: block;
+        /* Make labels block elements */
+        margin-bottom: 5px;
+        /* Space below labels */
+        font-weight: bold;
+        /* Bold labels for emphasis */
+        color: #555;
+        /* Slightly lighter dark color */
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        /* Full width inputs */
+        padding: 10px;
+        /* Internal spacing */
+        border: 1px solid #ccc;
+        /* Light border */
+        border-radius: 5px;
+        /* Rounded corners */
+        transition: border 0.3s;
+        /* Smooth border transition */
+        font-size: 16px;
+        /* Larger font size */
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #007bff;
+        /* Change border color on focus */
+        outline: none;
+        /* Remove default outline */
+    }
+
+    button {
+        background-color: #007bff;
+        /* Primary button color */
+        color: white;
+        /* Text color */
+        border: none;
+        /* No border */
+        padding: 12px 20px;
+        /* Button padding */
+        border-radius: 5px;
+        /* Rounded corners */
+        cursor: pointer;
+        /* Pointer cursor on hover */
+        font-size: 16px;
+        /* Font size */
+        transition: background-color 0.3s;
+        /* Smooth background transition */
+    }
+
+    button:hover {
+        background-color: #0056b3;
+        /* Darker shade on hover */
+    }
+</style>
+
+<div class="form_container">
+    <h1>New Property</h1>
+    <form class="property_form" method="POST">
+        {% csrf_token %}
+        <div class="form_group">
+            <label for="property_name">Name</label>
+            <input type="text" name="name" placeholder="Property Name" required />
+        </div>
+
+        <div class="form_group">
+            <label for="address">Address</label>
+            <input type="text" name="address" placeholder="Property Address" required />
+        </div>
+
+        <div class="form_group">
+            <label for="number_of_floors">Number of Floors</label>
+            <input type="number" name="number_of_floors" placeholder="No. of floors" required min="1" />
+        </div>
+
+        <div class="form_group">
+            <label for="size">Size (sqm)</label>
+            <input type="number" name="size" placeholder="Size" required min="1" />
+        </div>
+
+        <div class="form_group">
+            <label for="description">Description</label>
+            <textarea name="description" rows="5" placeholder="A detailed description of the property"
+                required></textarea>
+        </div>
+
+        <div class="form_group">
+            <label for="price">Price</label>
+            <input type="number" name="price" placeholder="Price" required min="0" />
+        </div>
+
+        <div class="form_group">
+            <label for="advanced_payment">Advanced Payment</label>
+            <input type="number" name="advanced_payment" placeholder="Advanced Payment" required min="0" />
+        </div>
+
+        <button type="submit" class="submit_btn">Submit</button>
+    </form>
+</div>
+{% endblock body %}

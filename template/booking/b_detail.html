@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} Property {% endblock title %}
+
+{% block body %}
+<style>
+    /* Container styling */
+    .booku {
+        width: 90%; /* Cover 90% of the page width */
+        margin: 20px auto; /* Center the container horizontally and add margin */
+        padding: 20px; /* Add padding inside the container */
+        background-color: #f9f9f9; /* Light background color */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+    }
+
+    /* Styling for individual spans */
+    .booku span {
+        display: block; /* Make each span a block element for better spacing */
+        font-size: 1.1rem; /* Slightly larger font size */
+        margin-bottom: 10px; /* Space between each span */
+    }
+
+    /* Bold text styling */
+    .booku b {
+        font-weight: bold; /* Make text bold */
+    }
+
+    /* Link styling */
+    .booku a {
+        color: #007bff; /* Link color */
+        text-decoration: none; /* Remove underline from links */
+    }
+
+    .booku a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+
+    /* Alert styling */
+    .booku h3 {
+        color: red; /* Red color for alert text */
+        font-size: 1.2rem; /* Slightly larger font size */
+    }
+</style>
+
+<div class="booku">
+    <!-- Display booking details -->
+    <span><b>Type of booking: </b>{{ booking.level }}</span>
+    <span><b>Next date of interest: </b>{{ booking.next_date }}</span>
+    {% if booking.payment %}
+        <span><b>Payment amount: </b>{{ booking.payment.amount }}</span>
+    {% elif booking.tenant == user.account %}
+        <span><a href="{% url 'server:pay_booking' pk=booking.id %}">Pay unit</a></span>
+    {% else %}
+        <h3>NO PAYMENT MADE</h3>
+    {% endif %}
+    <span>{{ booking.unit.property.name }}</span>
+    <span>{{ booking.unit.unitCode }}</span>
+</div>
+
+{% endblock %}

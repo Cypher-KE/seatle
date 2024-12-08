@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+{% load app_filters %}
+{% block title %}Registration{% endblock %}
+{% block brand_link %}{% endblock %}
+{% block nav_button %}<a href="/">Login</a>{% endblock %}
+{% block body_header %}{% endblock %}
+{% block body %}
+<style>
+    body, html {
+        height: 100%; /* Full height for the body and html */
+        margin: 0; /* Remove default margin */
+        font-family: 'Arial', sans-serif; /* Use a modern font */
+        display: flex; /* Flexbox for body layout */
+    }
+    .container {
+        display: flex; /* Use flexbox for layout */
+        height: 100vh; /* Full viewport height */
+        width: 100%; /* Full width */
+    }
+    .form-container {
+        flex: 1; /* Take half the width */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center vertically */
+        align-items: center; /* Center horizontally */
+        background-color: white; /* White background for the form */
+        padding: 40px; /* Add padding for better spacing */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Optional: add some shadow */
+    }
+    .image-container {
+        flex: 1; /* Take the other half */
+        background-image: url("/static/images/back.jpg");
+        background-size: cover; /* Cover the entire area */
+        background-position: center; /* Center the image */
+        display: flex; /* Use flexbox for inner content */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        color: rgb(255, 255, 255); /* Text color for visibility */
+    }
+    .inner-div {
+        background: rgba(0, 0, 0, 0.6); /* Semi-transparent background for better readability */
+        padding: 20px;
+        border-radius: 10px; /* Rounded corners */
+        text-align: center; /* Center text */
+    }
+    h2 {
+        margin-bottom: 20px; /* Space below the heading */
+    }
+    label {
+        font-weight: bold; /* Bold labels */
+        margin-bottom: 5px; /* Space below labels */
+        display: block; /* Block display for labels */
+        color: #333; /* Dark color for labels */
+    }
+    input[type="text"], input[type="password"] {
+        width: 100%; /* Full width for inputs */
+        padding: 10px; /* Padding inside inputs */
+        margin-bottom: 20px; /* Space below inputs */
+        border: 1px solid #ccc; /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        transition: border 0.3s; /* Smooth border transition */
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        border: 1px solid #007bff; /* Change border color on focus */
+        outline: none; /* Remove outline */
+    }
+    button {
+        background-color: #007bff; /* Button color */
+        color: white; /* Button text color */
+        border: none; /* No border */
+        padding: 10px 20px; /* Padding for button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s; /* Smooth background color transition */
+    }
+    button:hover {
+        background-color: #0056b3; /* Darker color on hover */
+    }
+    .text-center {
+        text-align: center; /* Center align text */
+    }
+    a {
+        color: #007bff; /* Link color */
+        text-decoration: none; /* No underline */
+    }
+    a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+<body>
+<div class="container">  
+    <div class="image-container">
+        <div class="inner-div">
+            <h3>Welcome Back!</h3>
+            <img src="{%static '../static/images/logo.jpg' %}" height="45" width="50">
+            <p>Becima</p>
+        </div>
+    </div>
+<div class="form-container">
+    <h2 style="font-weight: 500; color: #0056b3; text-transform: uppercase;">Register Form</h2>
+    {% include "singleform.html" %}
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <br>
+            <p>Already have an account? <a href="/" style="color: #ff6a00;" role="button">Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

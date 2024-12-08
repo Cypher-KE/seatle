@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Update Profile{% endblock %}
+{% block sidebar_profile %}active{% endblock %}
+{% block body_header %}Update Profile{% endblock %}
+{% block body %}
+    <p class="lead">Make changes to your profile and click '{{ form_button }}' when finished.</p>
+        <h1>Hello</h1>
+    <form class="register_form" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Update User</button>
+    </form>
+{% endblock %}

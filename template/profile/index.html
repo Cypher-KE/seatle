@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Profile</title>
+</head>
+<body>
+<style>
+ body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.card-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    overflow-x: hidden;
+    transition: transform 0.5s ease-in-out;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.card-container:hover .card {
+    transform: translateX(-20%);
+}
+
+.card-container:hover .card:hover {
+    transform: translateX(20%);
+}
+
+.icon img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+}
+
+.card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.view-profile-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-profile-button:hover {
+    background-color: #2980b9;
+}
+
+        </style>
+    <div class="card-container">
+        <div class="card">
+            <div class="icon">
+                <img src="{% static 'profileapp/profile-icon.png' %}" alt="Profile Icon">
+            </div>
+            <h3>{{ profile.name }}</h3>
+            <p><strong>User Type:</strong> {{ profile.user_type }}</p>
+            <p><strong>Number of Properties:</strong> {{ profile.number_of_properties }}</p>
+            <p><strong>Email:</strong> {{ profile.email }}</p>
+            <p><strong>Phone Number:</strong> {{ profile.phone_number }}</p>
+            <p><strong>Address:</strong> {{ profile.address }}</p>
+            <button class="view-profile-button">Edit Profile</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}property{% endblock title %}
+
+{% block body %}
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<main style="margin: 20px; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
+
+    <h1 style="text-align: center; margin-top: 0; font-size: 2.5em; color: #695CFE; border-bottom: 2px solid #695CFE; padding-bottom: 10px; text-transform: uppercase;"><b>{{property.name}}</b></h1>
+
+    <section style="display: flex; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Image Carousel -->
+        <div style="flex-grow: 1; position: relative; overflow: hidden; border-radius: 0 10px 10px 0;">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="{{ property.photos.first.image.url }}" alt="{{ property.name }} photo" style="width: 100%; height: auto; object-fit: cover;">
+                    </div>
+                    {% for photo in property.photos.all|slice:"1:" %}
+                    <div class="swiper-slide">
+                        <img src="{{ photo.image.url }}" alt="{{ property.name }} image" style="width: 100%; height: auto; object-fit: cover;">
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; width: 100%;">
+        <div style="flex: 1; background-color: #f5f5f5; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center;">
+            <h2 style="font-size: 1.8em; color: #695CFE; margin-top: 0;">${{property.price}}</h2>
+            <span style="display: block; margin-bottom: 5px;">Ratings: <b>{{property.rating}}</b> ({{property.review_count}} review)</span>
+            <span style="display: block; margin-bottom: 5px;">Number of units: <b>{{count}}</b></span>
+            <span style="display: block;">Address: <b>{{property.address}}</b></span>
+        </div>
+        
+        <div style="margin-top: 30px; display: flex; justify-content: center; gap: 10px;">
+            {% if user.account.role == 20 and property.owner == user.account.profile.owner %}
+            <form action="{% url 'server:edit_unit' pk=property.id %}" method="get">
+                <button type="submit" style="color: #fff; background-color: #695CFE; border: none; padding: 10px 15px; cursor: pointer; font-weight: 600; border-radius: 10px;">Edit Property</button>
+            </form>
+            <form action="{% url 'server:new_unit' pk=property.id %}" method="get">
+                <button type="submit" style="color: #fff; background-color: #695CFE; border: none; padding: 10px 15px; cursor: pointer; font-weight: 600; border-radius: 10px;">Add Units</button>
+            </form>
+            {% endif %}
+            <form action="{% url 'server:units_list' pk=property.id %}" method="get">
+                <button type="submit" style="color: #fff; background-color: #695CFE; border: none; padding: 10px 15px; cursor: pointer; font-weight: 600; border-radius: 10px;">Unit List</button>
+            </form>
+        </div>
+
+        <div style="flex: 1; display: flex; align-items: center; padding: 16px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: #f5f5f5;">
+            {% if owner.avatar == '' %}
+                <div style="width: 100px; height: 100px; background-color: #695CFE; color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%; margin-right: 16px;">
+                    <span style="font-size: 40px;">{{ owner.profile.firstname|first }}{{ owner.profile.lastname|first }}</span>
+                </div>
+            {% else %}
+                <img src="{{owner.avatar.url}}" alt="Avatar of {{owner.profile.firstname}} {{owner.profile.lastname}}" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #695CFE; margin-right: 16px; object-fit: cover;">
+            {% endif %}
+            <div>
+                <h3 style="margin: 0; color: #695CFE;">{{owner.profile.firstname}} {{owner.profile.lastname}}</h3>
+                <p style="margin: 5px 0 0; color: #666;">Property Owner</p>
+                <p style="margin: 5px 0 0; color: #666;">Phone: {{owner.profile.phone}}</p>
+            </div>
+        </div>
+</div>
+
+    
+
+
+    <section style="margin-top: 30px;">
+        <h1 style="color: #695CFE; border-bottom: 2px solid #695CFE; padding-bottom: 10px;">Utilities</h1>
+        <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+            {% if facilities.air_conditioner %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Air Conditioner</p>
+            </li>
+            {% endif %}
+            {% if facilities.kitchen %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Kitchen</p>
+            </li>
+            {% endif %}
+            {% if facilities.free_parking %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Free Parking</p>
+            </li>
+            {% endif %}
+            {% if facilities.free_wifi %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Free Wifi</p>
+            </li>
+            {% endif %}
+            {% if facilities.pool %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Pool</p>
+            </li>
+            {% endif %}
+            {% if facilities.gym %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Gym</p>
+            </li>
+            {% endif %}
+            {% if facilities.balcony %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Balcony</p>
+            </li>
+            {% endif %}
+            {% if facilities.garden %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Garden</p>
+            </li>
+            {% endif %}
+            {% if facilities.laundry %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Laundry</p>
+            </li>
+            {% endif %}
+            {% if facilities.pet_friendly %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Pet Friendly</p>
+            </li>
+            {% endif %}
+            {% if facilities.furnished %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Furnished</p>
+            </li>
+            {% endif %}
+            {% if facilities.fireplace %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Fireplace</p>
+            </li>
+            {% endif %}
+            {% if facilities.security %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Security</p>
+            </li>
+            {% endif %}
+            {% if facilities.elevator %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Elevator</p>
+            </li>
+            {% endif %}
+            {% if facilities.spa %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Spa</p>
+            </li>
+            {% endif %}
+            {% if facilities.dishwasher %}
+            <li style="background: #e4e4e4; border-radius: 5px; padding: 15px; display: flex; align-items: center;">
+                <span style="display: inline-block; width: 20px; height: 20px; background-color: #695CFE; margin-right: 10px; border-radius: 50%;"></span>
+                <p style="margin: 0;">Dishwasher</p>
+            </li>
+            {% endif %}
+        </ul>
+    </section>
+    
+    <section style="margin-top: 30px;">
+        <h1 style="color: #695CFE; border-bottom: 2px solid #695CFE; padding-bottom: 10px;">Facilities</h1>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <h3 style="color: #695CFE; margin-top: 0;">Minimarket</h3>
+                <p style="margin-bottom: 0;">{{ utils.mini_market }}</p>
+            </div>
+    
+            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <h3 style="color: #695CFE; margin-top: 0;">Security</h3>
+                <p style="margin-bottom: 0;">{{ utils.security }}</p>
+            </div>
+    
+            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <h3 style="color: #695CFE; margin-top: 0;">Park</h3>
+                <p style="margin-bottom: 0;">{{ utils.park }}</p>
+            </div>
+    
+            <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <h3 style="color: #695CFE; margin-top: 0;">Outdoor Gym</h3>
+                <p style="margin-bottom: 0;">{{ utils.outdoor_gym }}</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+<script>
+    const swiper = new Swiper('.swiper-container', {
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    // Add functionality to update the carousel based on the clicked preview image
+    document.querySelectorAll('.preview-image').forEach((element, index) => {
+        element.addEventListener('click', () => {
+            swiper.slideToLoop(index);
+        });
+    });
+</script>
+
+{% endblock body %}

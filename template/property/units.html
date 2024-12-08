@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %} unit {% endblock title %}
+
+{% block body %}
+<style>
+/* General Table Styles */
+table {
+    width: 90%; /* Set table width to 90% */
+    border-collapse: collapse; /* Collapse borders */
+    margin: 20px auto; /* Center the table with margin */
+    font-size: 16px; /* Font size */
+    background-color: #ffffff; /* Table background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* Caption Styles */
+caption {
+    font-size: 1.5rem; /* Larger caption font */
+    margin-bottom: 10px; /* Space below caption */
+    text-align: center; /* Center the caption */
+}
+
+/* Table Header */
+thead th {
+    background-color: #695CFE; /* Header background color */
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #ffffff; /* Header text color */
+    padding: 12px; /* Padding */
+    text-align: center; /* Left align text */
+    border: 1px solid #ddd; /* Cell border */
+}
+
+/* Table Body */
+tbody td {
+    padding: 10px; /* Padding */
+    border: 1px solid #ddd; /* Cell border */
+    color: #333; /* Text color */
+}
+
+/* Alternating Row Colors */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Light gray for even rows */
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: #e1f5fe; /* Light blue on hover */
+}
+
+.custom-button {
+        display: inline-block;
+        padding: 10px 15px;
+        color: #fff;
+        background-color: #007bff; /* Bootstrap primary color */
+        border: none;
+        border-radius: 5px; /* Rounded corners */
+        text-align: center;
+        text-decoration: none; /* Remove underline */
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .custom-button:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+    }
+
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    table {
+        display: block; /* Make table block for responsiveness */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        white-space: nowrap; /* Prevent text wrapping */
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    thead {
+        display: none; /* Hide the header for smaller screens */
+    }
+
+    tbody tr {
+        display: block; /* Make rows block for stacking */
+        margin-bottom: 10px; /* Space between rows */
+    }
+
+    tbody td {
+        display: flex; /* Flexbox for better layout */
+        justify-content: space-between; /* Space between label and value */
+        padding: 10px; /* Padding for cells */
+        border: none; /* No border for stacked view */
+        text-align: left; /* Align text to the left */
+    }
+
+    tbody td::before {
+        content: attr(data-label); /* Use data-label for headers in responsive view */
+        flex: 1; /* Flex grow to fill space */
+        font-weight: bold; /* Bold labels */
+        color: #007bff; /* Color for labels */
+    }
+}
+</style>
+<!-- TODO:  Make it so only the owner can see all-->
+<section class="units">
+    <table class="table table-hover table-striped table-bordered">
+        <caption class="m-auto" style="text-align: auto; width:100%;">UNITS</caption>
+        <thead>
+            <tr>
+                <th scope="col">code</th>
+                <th scope="col">floor</th>
+                <th scope="col">price</th>
+                <th scope="col">size</th>
+                <th scope="col">bedrooms</th>
+                <th scope="col">bathrooms</th>
+                <th scope="col">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for unit in units %}
+                <tr class="table-primary table-active">
+                    <th scope="col">{{ unit.unitCode }}</th>
+                    {% if unit.floor.number is 0 %}
+                        <td> Ground </td>
+                    {% else %}
+                        <td> {{ unit.floor.number }} </td>
+                    {% endif %}
+                    <td> ksh {{ unit.unit_price }} </td>
+                    <td> {{ unit.size }} </td>
+                    <td> {{ unit.bedrooms }} </td>
+                    <td> {{ unit.bathrooms }} </td>
+                    <td><a href="{% url 'server:unit' pk=unit.id %}" class="custom-button">View Details</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock body %}

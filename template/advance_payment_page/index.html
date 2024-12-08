@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %} Advanced Title {% endblock title %}
+
+{% block content %} 
+		<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
+
+.property {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.property img {
+    max-width: 300px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.property_details {
+    flex: 1;
+}
+
+.property_name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.property_address {
+    font-size: 18px;
+    color: #555;
+}
+
+.price_details {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.price_details h2 {
+    margin-bottom: 10px;
+}
+
+.payment_gateways {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.gateway {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    flex: 1 1 30%; /* Flexible width for gateways */
+    margin: 10px;
+}
+
+.gateway h2 {
+    margin: 10px 0;
+}
+
+.pay_button {
+    background-color: #695CFE;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.pay_button:hover {
+    background-color: #0056b3;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+</style>
+		</style>
+		<section class="property">
+			<img src="#" alt="image of propety">
+			<article class="property_details">
+					<span><p><!--add star icon --></p>{{property.rating}} ({{property.review_count}})</span>
+					<h2 class="property_name">{{property.name}}</h2>
+					<h3 class="property_address">{{property.address}}</h3><br/><br/>
+
+					<h2><b>{{property.rent}}</b></h2>
+			</article>
+		</section>
+
+		<section class="price_details">
+				<h2><b>Price Details</b></h2>
+				<p><label for="total_price">Total Price</label> <h3>${{property.price}}</h3></p>
+		</section>
+
+		<section class="payment_gateways">
+			<div class="gateway" id="debit_card">
+					<!--Add debit card icon -->
+					<h2>Debit card</h2>
+					<button class="pay_button">+</button>
+			</div>
+			<div class="gateway" id="google_pay">
+					<!--Add google icon -->
+					<h2>Google Pay</h2>
+					<button class="pay_button">+</button>
+			</div>
+			<div class="gateway" id="apple_pay">
+					<!--Add apple icon -->
+					<h2>Apple Pay</h2>
+					<button class="pay_button">+</button>
+			</div>
+			<div class="gateway" id="pay_pal">
+					<!--Add paypal icon -->
+					<h2>Pay pal</h2>
+					<button class="pay_button">+</button>
+			</div>
+			<div class="gateway" id="mpesa">
+					<!--Add mpesa icon -->
+					<h2>Mpesa</h2>
+					<button class="pay_button">+</button>
+			</div>
+		</section>
+	
+		<button> Pay in advance </button>
+{% endblock content %}

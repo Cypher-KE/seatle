@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block title %} edit_property {% endblock title %}
+{% block body %}
+<style>
+    /* General Styles */
+body {
+    font-family: Arial, sans-serif; /* Clean font */
+    background-color: #f8f9fa; /* Light background */
+    color: #333; /* Default text color */
+}
+
+/* Form Styles */
+.property_edit_form {
+    margin: 20px auto; /* Center the form */
+    width: 100%;
+    padding: 50px; /* Padding around the form */
+    background-color: #ffffff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Form Group Styles */
+.form_group {
+    margin-bottom: 20px; /* Space below each form group */
+}
+
+/* Label Styles */
+.form_group label {
+    display: block; /* Block display for labels */
+    font-weight: bold; /* Bold labels */
+    margin-bottom: 5px; /* Space below label */
+    color: #333; /* Text color */
+}
+
+/* Input and Textarea Styles */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea,
+select {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    transition: border-color 0.3s; /* Smooth border transition */
+}
+
+/* Input Focus Styles */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #695CFE; /* Change border color on focus */
+    outline: none; /* Remove outline */
+}
+
+/* Help Text Styles */
+.form-text {
+    font-size: 14px; /* Smaller font size for help text */
+    color: #6c757d; /* Muted color for help text */
+}
+
+/* Button Styles */
+.submit_btn {
+    width: auto; /* Full width */
+    padding: 10px; /* Padding */
+    background-color: #695CFE; /* Button color */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.submit_btn:hover {
+    background-color: #695CFE; /* Darker blue on hover */
+}
+
+/* Button for Adding Photos */
+button[type="submit"]:not(.submit_btn) {
+    background-color: #695CFE; /* Custom color for this button */
+    font-weight: bold; /* Bold text */
+}
+
+/* Grid Layout for Facilities */
+.facilities-grid {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow wrapping of items */
+    gap: 15px; /* Space between items */
+    margin-bottom: 20px; /* Space below the grid */
+}
+
+/* Individual Facility Card */
+.facility-card {
+    flex: 1 0 18%; /* Adjust width to fit 5 per row */
+    padding: 15px; /* Padding inside card */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f8f9fa; /* Light background */
+    display: flex; /* Flex for label and checkbox alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    cursor: pointer; /* Cursor pointer on hover */
+    transition: box-shadow 0.3s; /* Smooth shadow transition */
+}
+
+/* Card Hover and Checked Styles */
+.facility-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+}
+
+.facility-card.checked {
+    background-color: #695CFE; /* Highlight color when checked */
+    color: white; /* Change text color when checked */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .property_edit_form {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    .submit_btn {
+        font-size: 14px; /* Smaller font size for buttons */
+    }
+}
+</style>
+<h1 style="text-align: center;"><u>Property Update</u></h1>
+<form class="property_edit_form" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form_group {{ field.name }}_group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="submit_btn" > update unit</button>
+</form>
+<br>
+<form action="{% url 'server:add_prop_photos' pk=property.id %}" method="get" style="display: flex; justify-content: center; align-items: center; width: 100%;">
+    <button type="submit" style="color: #fff; background-color: #695CFE; border: none; padding: 10px 15px; cursor: pointer; font-weight: bold;">Add Photos</button>
+</form><br>
+<hr>
+
+<!--Facilities form-->
+<br>
+    <h1 style="text-align: center;"><u>Facilities</u></h1>
+<form class="property_edit_form" action="{% url 'server:facilities' pk=property.id %}" method="POST" >
+    {% csrf_token %}
+    <div class="facilities-grid">
+        {% for field in facilities_form %}
+            {% if field.label != "Prop" %}
+            <div class="facility-card {% if field.value %}checked{% endif %}" onclick="toggleCheckbox('{{ field.id_for_label }}')">
+                <input type="checkbox" id="{{ field.id_for_label }}" name="{{ field.name }}" value="1" style="display: none;" {% if field.value %} checked {% endif %}>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <button type="submit" class="submit_btn" > update facilities</button>
+</form>
+
+<br>
+
+<hr>
+
+<!--Public Utilities-->
+<br>
+		<h1 style="text-align: center;"><u>Public Utilities</u></h1>
+<form class="property_edit_form" method="post" action="">
+    {% csrf_token %}
+    {% for field in utils_form %}
+    {% if field.label != "Prop" %}
+    <div class="form_group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <button type="submit" class="submit_btn">update utilities</button>
+</form>
+
+<script>
+function toggleCheckbox(id) {
+    const checkbox = document.getElementById(id);
+    checkbox.checked = !checkbox.checked; // Toggle the checked state
+    const card = checkbox.closest('.facility-card');
+    card.classList.toggle('checked', checkbox.checked); // Add 'checked' class if checked
+}
+</script>
+{% endblock body %}

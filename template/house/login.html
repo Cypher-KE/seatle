@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% load app_filters %}
+{% block title %}Login{% endblock %}
+{% block brand_link %}{% endblock %}
+{% block nav_button %}<a href="/register/">Register</a>{% endblock %}
+{% block body %}
+    <style>
+        body, html {
+            height: 100%; 
+            margin: 0; 
+            font-family: 'Arial', sans-serif; 
+            display: flex; 
+        }
+        .container {
+            display: flex; 
+            height: 100vh; 
+            width: 100%; 
+        }
+        .form-container {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            background-color: white; 
+            padding: 100px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+            border-radius: 10px; 
+        }
+        .image-container {
+            flex: 1; 
+            background-image: url("/static/images/back.jpg");
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: white; 
+        }
+        .inner-div {
+            background: rgba(0, 0, 0, 0.6); 
+            padding: 20px;
+            border-radius: 10px; 
+            text-align: center; 
+        }
+        h2 {
+            margin-bottom: 10px; 
+            font-size: 24px; 
+        }
+        label {
+            font-weight: bold; 
+            margin-bottom: 5px; 
+            display: block; 
+            color: #333; 
+        }
+        
+        button {
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+            font-size: 16px; 
+        }
+        button:hover {
+            background-color: #0056b3; 
+        }
+        .text-center {
+            text-align: center; 
+        }
+        a {
+            color: #007bff; 
+            text-decoration: none; 
+        }
+        a:hover {
+            text-decoration: underline; 
+        }
+
+        li{
+            background: rgba(48, 48, 48, 0.322);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+<body>
+    <div class="container">  
+        <div class="image-container">
+            <div class="inner-div">
+               <h2>Becima</h2>
+                <img src="/static/images/logo.jpg" height="100px" width="90px">
+                <h3>What we do!</h3>
+                <ul style="list-style-type: none;">
+                    <li>Property Listing and Marketing</li>
+                    <li>Rental Property Management</li>
+                    <li>Maintenance and Repairs Coordination</li>
+                    <li>Financial Reporting and Accounting</li>
+                    <li>Lease Agreement Management</li>
+                    <li>Owner and Tenant Support</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-container">
+            <h2 style="font-weight: 500; color: #0056b3; text-transform: uppercase;">Login Form</h2>
+            {% include "singleform.html" %}<br>
+            <p>Don't have an account? <a href="/register/" style="color: #ff6a00;">Sign Up</a></p>
+        </div>
+    </div>
+</body>
+{% endblock %}

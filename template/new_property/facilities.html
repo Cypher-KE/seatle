@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %} Amenities {% endblock title %}
+
+{% block content %}
+<h2><u>Facilities</u></h2>
+<form class="facilities" method="POST" action="/property/facilities">	
+    {% csrf_token %}
+    <h1>{{property.id}}</h1>
+    <input type="hidden" name="property" value="{{property.id}}">
+
+    <div class="form_group">
+        <label for="air_conditioner">Air Conditioner</label>
+        <input type="checkbox" name="air_conditioner"/>
+    </div>
+
+    <div class="form_group">
+        <label for="kitchen">Kitchen</label>
+        <input type="checkbox" name="kitchen"/>
+    </div>
+
+    <div class="form_group">
+        <label for="free_parking">Free Parking</label>
+        <input type="checkbox" name="free_parking"/>
+    </div>
+
+    <div class="form_group">
+        <label for="free_wifi">Free WiFi</label>
+        <input type="checkbox" name="free_wifi"/>
+    </div>
+
+    <!-- Additional Amenities -->
+    <div class="form_group">
+        <label for="pool">Swimming Pool</label>
+        <input type="checkbox" name="pool"/>
+    </div>
+
+    <div class="form_group">
+        <label for="gym">Gym</label>
+        <input type="checkbox" name="gym"/>
+    </div>
+
+    <div class="form_group">
+        <label for="balcony">Balcony</label>
+        <input type="checkbox" name="balcony"/>
+    </div>
+
+    <div class="form_group">
+        <label for="garden">Garden</label>
+        <input type="checkbox" name="garden"/>
+    </div>
+
+    <div class="form_group">
+        <label for="laundry">Laundry Facilities</label>
+        <input type="checkbox" name="laundry"/>
+    </div>
+
+    <div class="form_group">
+        <label for="pet_friendly">Pet Friendly</label>
+        <input type="checkbox" name="pet_friendly"/>
+    </div>
+
+    <div class="form_group">
+        <label for="furnished">Furnished</label>
+        <input type="checkbox" name="furnished"/>
+    </div>
+
+    <div class="form_group">
+        <label for="fireplace">Fireplace</label>
+        <input type="checkbox" name="fireplace"/>
+    </div>
+
+    <div class="form_group">
+        <label for="security">24/7 Security</label>
+        <input type="checkbox" name="security"/>
+    </div>
+
+    <div class="form_group">
+        <label for="elevator">Elevator</label>
+        <input type="checkbox" name="elevator"/>
+    </div>
+
+    <div class="form_group">
+        <label for="spa">Spa</label>
+        <input type="checkbox" name="spa"/>
+    </div>
+
+    <div class="form_group">
+        <label for="dishwasher">Dishwasher</label>
+        <input type="checkbox" name="dishwasher"/>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock content %}

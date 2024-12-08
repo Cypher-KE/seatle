@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %} Property {% endblock title %}
+
+{% block body %}
+<style>
+    .booking {
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tbl {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .tbl th, .tbl td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .tbl th {
+        background-color: #695CFE;
+        color: #ffffff;
+        font-weight: bold;
+    }
+    
+    .tbl tr:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .tbl td a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .tbl td a:hover {
+        text-decoration: none;
+    }
+    
+    @media (max-width: 768px) {
+        .tbl {
+            font-size: 14px;
+        }
+    
+        .tbl th, .tbl td {
+            padding: 10px;
+        }
+    }
+    </style>
+
+<div class="booking">
+    <h1 style="text-align: center; color: #007bff;">Bookings</h1><br>
+    <table class="tbl booku">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Next Date</th>
+                <th>Price</th>
+                <th>Property</th>
+                <th>Unit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>{{ booking.level }}</td>
+                    <td>{{ booking.next_date }}</td>
+                    {% if booking.payment %}
+                        <td>{{ booking.payment.amount }}</td>
+                    {% else %}
+                        <td><a href="{% url 'server:pay_booking' pk=booking.id %}">Pay unit</a></td>
+                    {% endif %}
+                    <td>{{ booking.unit.property.name }}</td>
+                    <td>{{ booking.unit.unitCode }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

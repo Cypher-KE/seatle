@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% load static %}
+{% load app_filters %}
+{% block title %}Overview{% endblock %}
+{% block sidebar_profile %}active{% endblock %}
+{% block body_header %}
+<h1 style="text-decoration: underline; text-align: center;">Welcome {{ user.account }}</h1>
+{% endblock %} 
+{% block body %}
+<style>
+    /* Basic Reset and Box-Sizing */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    h1, h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .dashboard {
+        display: flex;
+        justify-content: space-between; /* Distribute space between cards */
+        gap: 20px; /* Add spacing between cards */
+        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        padding: 20px; /* Padding around dashboard */
+    }
+
+    .card {
+        background: #fff; /* Card background color */
+        border: 1px solid #ddd; /* Card border color */
+        border-radius: 8px; /* Rounded corners */
+        padding: 20px; /* Inner padding */
+        flex: 1; /* Flex grow to make cards stretch equally */
+        min-width: 200px; /* Minimum width for responsiveness */
+        max-width: 30%; /* Prevent cards from becoming too wide */
+        text-align: center; /* Center align text */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        transition: box-shadow 0.3s; /* Smooth shadow transition */
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    }
+
+    .card h2 {
+        font-size: 1.5rem; /* Larger font size for the number */
+        color: #333; /* Text color */
+        margin-bottom: 10px; /* Space between number and label */
+    }
+
+    .card p {
+        font-size: 1rem; /* Font size for the label */
+        color: #666; /* Text color */
+    }
+
+    .pricing-container {
+        display: flex;
+        justify-content: space-between; /* Distribute space between cards */
+        gap: 20px; /* Add spacing between cards */
+        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        padding: 20px; /* Padding around dashboard */
+    }
+
+    .plan {
+        background: #fff; /* Card background color */
+        border: 1px solid #ddd; /* Card border color */
+        border-radius: 8px; /* Rounded corners */
+        padding: 20px; /* Inner padding */
+        flex: 1; /* Flex grow to make cards stretch equally */
+        min-width: 200px; /* Minimum width for responsiveness */
+        max-width: 30%; /* Prevent cards from becoming too wide */
+        text-align: center; /* Center align text */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        transition: box-shadow 0.3s; /* Smooth shadow transition */
+    }
+
+    .plan:hover {
+        transform: scale(1.05); /* Zoom effect */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect on hover */
+    }
+
+    .plan h3 {
+        margin: 0;
+    }
+
+    .plan .price {
+        font-size: 28px;
+        color: #28a745; /* Green color for price */
+    }
+
+    .plan .original-price {
+        text-decoration: line-through;
+        color: #999;
+    }
+
+    .plan button {
+        background-color: #007bff; /* Button color */
+        color: white; /* Button text color */
+        border: none; /* No border */
+        padding: 10px 20px; /* Padding for button */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s; /* Smooth background color transition */
+    }
+
+    .plan button:hover {
+        background-color: #0056b3; /* Darker color on hover */
+    }
+
+    @media (max-width: 768px) {
+        .card, .plan {
+            max-width: 100%; /* Full width on smaller screens */
+        }
+
+        .dashboard {
+            flex-direction: column; /* Stack cards vertically */
+            align-items: center; /* Center align cards */
+        }
+
+        .pricing-container {
+            flex-direction: column; /* Stack pricing plans vertically */
+            align-items: center; /* Center align pricing plans */
+        }
+    }
+</style>
+
+<h2>Effortless Property Management, Anytime, Anywhere</h2>
+<p style="text-align: center; font-size: medium;">At Becima, we specialize in comprehensive house and property management solutions tailored to meet your needs. Whether you are a property owner looking to maximize your investment or a tenant seeking a comfortable place to call home, we are here to help</p><br>
+
+<div class="dashboard">
+    <!-- Total Properties -->
+    <div class="card">
+        <h2>{{ total_properties }}</h2>
+        <p>Total Properties</p>
+    </div>
+
+    <!-- Total Users -->
+    <div class="card">
+        <h2>{{ total_registered }}</h2>
+        <p>Total Users</p>
+    </div>
+
+    <!-- Total Tenants -->
+    <div class="card">
+        <h2>{{ total_tenants }}</h2>
+        <p>Total Tenants</p>
+    </div>
+</div>
+
+<h2>Our Mission</h2>
+<p>We strive to provide exceptional management services that enhance the value of your property and ensure a seamless experience for tenants. Our dedicated team is committed to transparency, reliability, and excellence in every aspect of property management.</p><br>
+
+{% if user.account.role <= 20 %}
+<section>
+    <hr>
+    <h2 style="text-align: center; text-decoration: underline;">Pricing Plans</h2><br>
+    <div class="pricing-container">
+        <div class="plan">
+            <h3>Website</h3>
+            <p>Regular</p>
+            <p class="price">$1.95<sup>/mo</sup></p>
+            <p class="original-price">Renews at $4.99/mo</p>
+            <button>Add to Cart</button>
+            <div class="features">
+                <p>Register your property</p>
+                <p>Manage multiple properties</p>
+                <p>Free Blogging</p>
+            </div>
+        </div>
+        <div class="plan">
+            <h3>Website + Marketing</h3>
+            <p>Standard</p>
+            <p class="price">$5.95<sup>/mo</sup></p>
+            <p class="original-price">Renews at $9.99/mo</p>
+            <button>Add to Cart</button>
+            <div class="features">
+                <p>Register and Manage Your Property</p>
+                <p>Access to Our Marketing Team</p>
+                <p>Tenant Management</p>
+            </div>
+        </div>
+        <div class="plan recommended">
+            <h3>eCommerce</h3>
+            <p>Premium</p>
+            <p class="price">$7.95<sup>/mo</sup></p>
+            <p class="original-price">Renews at $19.99/mo</p>
+            <button>Add to Cart</button>
+            <div class="features">
+                <p>Activity Analysis</p>
+                <p>Register and Manage Properties</p>
+                <p>Professional Assistance</p>
+            </div>
+        </div>
+    </div>
+</section>
+<hr>
+<div class="col-md-5"></div>
+{% elif user.account.role == 30 %}
+<div class="panel-body">
+    <div class="dashboard">
+        <!-- Panel for Users Logged In -->
+        <div class="card">
+            <h2>{{ total_logins }}</h2>
+            <p>Users Logged In</p>
+        </div>
+
+        <!-- Panel for Users Logged Out -->
+        <div class="card">
+            <h2>{{ total_logouts }}</h2>
+            <p>Users Logged Out</p>
+        </div>
+
+        <!-- Panel for Users Registered -->
+        <div class="card">
+            <h2>{{ total_registered }}</h2>
+            <p>Users Registered</p>
+        </div>
+    </div><br>
+    <div class="panel-footer" style="text-align: center;">
+        <a href="/admin/statistics/">For a more detailed statistics view, click here</a>
+    </div>
+</div>
+{% else %}
+<div class="col-md-6"></div>
+{% endif %}
+{% if user.account.role == 20 %}
+    {% if user.account.profile.propertyowner == '' %}
+        Add more details
+    {% else %}
+        {{ user.account.profile.propertyowner.company_name }}
+    {% endif %}
+    <h1 style="color:black">Owner</h1>
+{% endif %}
+{% endblock %}

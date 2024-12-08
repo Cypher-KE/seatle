@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %} Property {% endblock title %}
+
+{% block body %}
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(to right, #f0f4f8, #e9ecef);
+        margin: 0;
+        line-height: 1.6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    /* Main Property Page */
+    .property_page {
+        max-width: 1600px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: white;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .property_page:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Title Styles */
+    h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #007bff;
+        font-weight: 600;
+    }
+
+    /* Meta Data Styles */
+    .meta_data {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 20px;
+        line-height: 1.5;
+        padding: 0 16px;
+    }
+
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.3s, transform 0.2s;
+        margin: 10px 0;
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+    }
+
+    /* Table Styles */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead th {
+        background-color: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid #0056b3;
+    }
+
+    .table tbody td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        color: #333;
+    }
+
+    /* Hover Effect for Table Rows */
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        body {
+            height: auto;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .property_page {
+            padding: 15px;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        .meta_data {
+            font-size: 14px;
+            padding: 0 10px;
+        }
+
+        .table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .table tbody td {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border: none;
+            text-align: left;
+        }
+
+        .table tbody td::before {
+            content: attr(data-label);
+            flex: 1;
+            font-weight: bold;
+            color: #007bff;
+        }
+    }
+</style>
+<main class="property_page">
+    <h2>Unit {{ unit.unitCode }} on floor: {{ unit.floor }} at property {{ unit.property.name }}</h2> 
+    <p class="meta_data">
+        This unit is {{ unit.size }}m<sup>s</sup>. It has {{ unit.bedrooms }} bedrooms and {{ unit.bathrooms }} bathrooms. <br>
+        It's price is Kes{{ unit.unit_price }}
+        {% if unit.rent is None %}
+            .
+        {% else %}
+            but you can rent it for Kes{{ unit.rent }} per month.
+        {% endif %}
+    </p>
+
+    {% if flag == 'b' %}
+    <form class="property_edit_form" method="POST" action="{% url 'server:booking' pk=unit.id %}">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn">Book Viewing</button>
+    </form>
+    
+    {% elif flag == 'p' %}
+    <form class="property_edit_form" method="POST" action="{% url 'server:pay_visiting' %}">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn">Pay</button>
+    </form>
+
+    {% elif flag == 'o' %}
+    <table class="table bookings_table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>type</th>
+                <th>next date</th>
+                <th>amount</th>
+                <th>payer</th>
+                <th>property</th>
+                <th>unit</th>
+                <th>by</th>
+                <th>contacts</th>
+                <th>Info</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.id }}</td>
+                <td>{{ booking.level }}</td>
+                <td>{{ booking.next_date }}</td>
+                {% if booking.payment %}
+                    <td>{{ booking.payment.amount }}</td>
+                    <td>{{ booking.payment.sender }}</td>
+                {% else %}
+                    <td><a href="{% url 'server:pay_booking' pk=booking.id %}">Pay unit</a></td>
+                {% endif %}
+                <td>{{ booking.unit.property.name }}</td>
+                <td>{{ booking.unit.unitCode }}</td>
+                <td>{{ booking.tenant.profile.firstname }} {{ booking.tenant.profile.lastname }}</td>
+                <td>{{ booking.tenant.profile.phone }}</td>
+                <td><a class="btn" href="{% url 'server:booking' pk=booking.id %}">View</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</main>
+{% endblock %}

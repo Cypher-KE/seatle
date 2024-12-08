@@ -1,0 +1,122 @@
+{% load app_filters %}
+<style>
+    form {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 50px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center; /* Center-align the contents */
+    }
+
+    .form-group {
+        margin-bottom: 26px; /* Increased vertical spacing */
+    }
+
+    label {
+        display: block;
+        font-weight: 550;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+        width: 80%; /* Adjust width for better centering */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #ff6a00;
+        box-shadow: 0 0 5px rgba(255, 106, 0, 0.5);
+        outline: none;
+    }
+
+    .btn {
+        background-color: #ff6a00;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 80%; /* Match button width with input fields */
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #e55a00;
+    }
+
+    .error {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: block; /* Ensure error messages are block-level */
+    }
+
+    @media (max-width: 768px) {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            padding: 8px;
+            font-size: 14px;
+            width: 90%; /* Adjust width for smaller screens */
+        }
+
+        .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            width: 90%; /* Match button width with input fields */
+        }
+    }
+</style>
+<br>
+<form action="./{% if form_action %}{{ form_action }}{% endif %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% for field in form %}
+    <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <label for="{{field.id_for_label}}">{{ field.label }}</label>
+        <div>
+            <div {% if field|isDateable %} id="form_{{field.id_for_label}}" {% endif %}>
+                {{ field }}
+                {% if field|isDateable %}
+                <span><span></span></span>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#form_{{ field.id_for_label }}').datetimepicker({
+                            {% if field|isDateField %}
+                                format: 'YYYY-MM-DD'
+                            {% elif field|isDateTimeField %}
+                                format: 'YYYY-MM-DD HH:mm'
+                            {% elif field|isTimeField %}
+                                format: 'HH:mm'
+                            {% endif %}
+                        });
+                    });
+                </script>
+                {% endif %}
+            </div>
+            {% if field.errors %}
+                <span class="error">{{ field.errors }}</span> <!-- Display error messages below the field -->
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div style="text-align: center;">
+        <input class="btn btn-primary" type="submit" value="{{ form_button }}" />
+    </div>
+
+</form>

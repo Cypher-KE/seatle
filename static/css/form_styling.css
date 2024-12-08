@@ -1,0 +1,71 @@
+	.form_container {
+		width: 100%; /* Make the container take up the full width */
+		padding: 20px;
+	}
+	
+	.property_form{
+		width: auto;
+		padding: 30px;
+		border-radius: 0; /* Remove border radius */
+		box-shadow: none; /* Remove box-shadow */
+		color: #000000;
+		background-color: white;
+		justify-content:center;
+		align-items:center;
+	}
+	
+	.form_group{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top:16px;
+		width: auto;
+		padding: 20px;
+	}
+	
+	/* section:     labels */
+	.form_group label{
+		width: 30%; /* Adjust width of labels */
+		text-align: left; /* Align text to the left */
+	}
+	
+	/* section:     input */
+	.form_group input, .form_group textarea {
+		width: 65%; /* Inputs take the remaining space */
+		padding: 5px;
+		border: 1px solid #adadad;
+		border-radius: 4px;
+	}
+	
+	/* section:     button */
+	button{
+		border-radius: 8px;
+		margin: 16px;
+		padding: 10px 20px;
+	}
+
+    .submit_btn {
+        display: block;
+        width: 40%;
+        padding: 14px;
+        background-color: #4a90e2;
+        color: #ffffff;
+        font-size: 22px;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+
+    .submit_btn:hover {
+        background-color: #00ADB5;
+        border-color: #FFD700 ;
+        color: #ffffff;
+        box-shadow: 0 4px 12px #FFD700 ; /* Modern shadow on hover */
+    }
+
+    .submit_btn:focus {
+        outline: none;
+    }

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %} unit {% endblock title %}
+
+{% block body %}
+<style>
+    /* General Form Styles */
+.property_edit_form {
+    max-width: 90%;
+    margin: 20px auto; /* Center the form */
+    padding: 20px; /* Padding around the form */
+    background-color: #ffffff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Form Group Styles */
+.form_group {
+    margin-bottom: 20px; /* Space below each form group */
+}
+
+/* Label Styles */
+.form_group label {
+    display: block; /* Block display for labels */
+    font-weight: bold; /* Bold labels */
+    margin-bottom: 5px; /* Space below label */
+    color: #333; /* Text color */
+}
+
+/* Input and Textarea Styles */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea,
+select {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    transition: border-color 0.3s; /* Smooth border transition */
+}
+
+/* Input Focus Styles */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove outline */
+}
+
+/* Help Text Styles */
+.form-text {
+    font-size: 14px; /* Smaller font size for help text */
+    color: #6c757d; /* Muted color for help text */
+}
+
+/* Button Styles */
+button[type="submit"] {
+    width: 50%; /* Full width */
+    padding: 10px; /* Padding */
+    background-color: #007bff; /* Button color */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .property_edit_form {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    button[type="submit"] {
+        font-size: 14px; /* Smaller font size for buttons */
+    }
+}
+</style>
+<form class="property_edit_form" method="POST">
+    <h1 style="text-align: center; color: #695CFE;">New Unit Registration</h1>
+    {% csrf_token %}
+{% for field in form %}
+        <div class="form_group {{ field.name }}_group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit"> Add unit</button>
+</form>
+{% endblock %}
