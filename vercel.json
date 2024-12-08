@@ -1,13 +1,26 @@
 {
-    "builds": [{
-        "src": "vercel_app/wsgi.py",
-        "use": "@ardnt/vercel-python-wsgi",
-        "config": { "maxLambdaSize": "15mb" }
-    }],
+    "version": 2,
+    "builds": [
+        {
+            "src": "vercel_app/wsgi.py",
+            "use": "@ardnt/vercel-python-wsgi",
+            "config": {
+                "maxLambdaSize": "15mb"
+            }
+        }
+    ],
     "routes": [
         {
             "src": "/(.*)",
             "dest": "vercel_app/wsgi.py"
         }
-    ]
+    ],
+    "env": {
+        "DJANGO_SETTINGS_MODULE": "myproject.settings",
+        "DATABASE_URL": "sqlite:///./db.sqlite3",  // Adjust the path as necessary
+        "SECRET_KEY": "your_secret_key_here"
+    },
+    "static": {
+        "serve": true
+    }
 }
