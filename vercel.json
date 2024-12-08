@@ -1,27 +1,21 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "vercel/api/index.py",
-      "use": "@vercel/python"
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.8",
+      "maxDuration": 10
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "vercel/api/index.py"
+      "dest": "api/index.py"
     }
   ],
   "env": {
     "DJANGO_SETTINGS_MODULE": "myproject.settings",
     "DATABASE_URL": "your_database_url_here",
     "SECRET_KEY": "your_secret_key_here"
-  },
-  "functions": {
-    "api/index.py": {
-      "runtime": "python3.8",
-      "maxDuration": 10
-    }
   },
   "build": {
     "env": {
