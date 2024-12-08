@@ -16,13 +16,5 @@
     "DJANGO_SETTINGS_MODULE": "myproject.settings",
     "DATABASE_URL": "your_database_url_here",
     "SECRET_KEY": "your_secret_key_here"
-  },
-  "build": {
-    "env": {
-      "DJANGO_SETTINGS_MODULE": "myproject.settings"
-    },
-    "commands": [
-      "bash build_script.sh"
-    ]
   }
 }
